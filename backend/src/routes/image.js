@@ -13,6 +13,49 @@ router.get(`${baseRoute}/:id`, (req, res) => {
     res.end();
 });
 
+/**
+ * @swagger
+ *
+ * /image:
+ *  post:
+ *      summary: "Upload an image"
+ *      consumes:
+ *          - "multipart/form-data"
+ *      parameters:
+ *          - in: formData
+ *            name: image
+ *            type: file
+ *            description: file to upload
+ *      produces:
+ *          - "application/json"
+ *      responses:
+ *          200:
+ *              description: OK
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      success:
+ *                          type: boolean
+ *                          description: true if successfull
+ *                      id:
+ *                          type: integer
+ *                          description: id of the uploaded image
+ *          422:
+ *              description: Missing file parameter
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      success:
+ *                          type: boolean
+ *                          default: false
+ *                          description: false to indicate error
+ *                      message:
+ *                          type: string
+ *                          description: error message
+ *          500:
+ *              description: Internal server error
+ *
+ */
 router.post(baseRoute, (req, res) => {
     try {
         if (!req.files) {

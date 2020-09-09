@@ -1,9 +1,11 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const logger = require('log4js');
+const swagger = require('swagger-ui-express');
 
 const commandParser = require('./utils/command-parser');
 const image = require('./routes/image');
+const swaggerJson = require('../swagger.json');
 
 const app = express();
 
@@ -22,3 +24,5 @@ app.listen(port, () => {
 
 app.use(fileUpload());
 app.use(image);
+
+app.use('/api/swagger-ui.html', swagger.serve, swagger.setup(swaggerJson));
