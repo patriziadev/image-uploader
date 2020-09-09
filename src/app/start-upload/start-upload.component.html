@@ -1,8 +1,8 @@
 <div class="content">
     <h1>Upload your image</h1>
     <p>File should be JPEG, PNG...</p>
-    <div class="dropzone">
-        <input type="file" #fileDropRef multiple (change)="fileBrowserHandler($event.target.files)">
+    <div class="dropzone" appDnd (click)="fileInput.click()" (onfileDropped)="uploadFile($event)">
+        <input type="file" #fileInput id="file" (change)="uploadFile($event.target.files)">
         <img src="../../assets/images/image.svg" alt="Drag & drop image">
         <h3>Drag & Drop your image here</h3>
     </div>
