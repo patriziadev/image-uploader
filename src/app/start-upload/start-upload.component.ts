@@ -12,4 +12,8 @@ export class StartUploadComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onSubmit(uploadFile) {
+
+  }
+
 }

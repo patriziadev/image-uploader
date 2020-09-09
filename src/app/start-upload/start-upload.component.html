@@ -1,1 +1,12 @@
-<p>HELLO</p>
+<div class="content">
+    <h1>Upload your image</h1>
+    <p>File should be JPEG, PNG...</p>
+    <div class="dropzone">
+        <input type="file" #fileDropRef multiple (change)="fileBrowserHandler($event.target.files)">
+        <img src="../../assets/images/image.svg" alt="Drag & drop image">
+        <h3>Drag & Drop your image here</h3>
+    </div>
+    <h3>or</h3>
+    <label for="file">Choose a file</label>
+</div>
+

@@ -1,0 +1,29 @@
+$blue1: #F6F8FB;
+$blue2: #97BEF4;
+$blue3: #2F80ED;
+
+.dropzone {
+    background-color: $blue1;
+    border: 2px dashed $blue2;
+    border-radius: 12px;
+    padding: 30px 0 10px;
+
+    input {
+        width: 0.1px;
+        height: 0.1px;
+        top: 0;
+        left: 0;
+        position: absolute;
+        opacity: 0;
+        z-index: 10;
+    }
+}
+
+label {
+    background-color: $blue3;
+    border-radius: 8px;
+    font-weight: 300;
+    font-size: 12px;
+    padding: 8px 15px;
+    color: #fff;
+}

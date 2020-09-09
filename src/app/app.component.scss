@@ -1,15 +1,43 @@
-$light-gray: #FAFAFB;
+$gray1: #FAFAFB;
+$gray2: #BDBDBD;
+$gray3: #828282;
+$gray4: #4F4F4F;
+$font: 'Poppins', sans-serif;
 
 #container {
     //width: 402px;
     width: 25rem;
     // height: 469px;
-    height: 30rem;
-    background-color: $light-gray;
+    // height: 30rem;
+    background-color: $gray1;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    font-family: $font;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    color: $gray4
+}
+
+h3 {
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 18px;
+    color: $gray2;
+}
+
+p {
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 15px;
+    color: $gray3;
 }
