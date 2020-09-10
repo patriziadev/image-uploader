@@ -3,14 +3,14 @@ const http = require('http-status-codes');
 const logger = require('log4js');
 const fs = require('fs');
 const path = require('path');
-const utils = require('../utils/command-parser');
+const config = require('../../config.json');
 
 const log = logger.getLogger('image');
 
 const router = express.Router();
 
 const baseRoute = '/api/image';
-const imagePath = path.resolve(utils.getImagePath());
+const imagePath = path.resolve(config.imagePath);
 
 /**
  * @swagger
@@ -33,14 +33,22 @@ const imagePath = path.resolve(utils.getImagePath());
  *                  type: file
  *          404:
  *              description: NOT FOUND
+ *          500:
+ *              description: Internal server error
  */
 router.get(`${baseRoute}/:id`, (req, res) => {
-    log.debug('Request to download image with id %s', req.params.id);
-    const imageFullPath = imagePath + path.sep + req.params.id;
-    if (fs.existsSync(imageFullPath)) {
-        res.status(http.OK).sendFile(imageFullPath);
-    } else {
-        res.sendStatus(http.NOT_FOUND);
+    try {
+        const imageFullPath = imagePath + path.sep + req.params.id;
+        if (fs.existsSync(imageFullPath)) {
+            log.debug('Request to download image with id %s OK', req.params.id);
+            res.status(http.OK).sendFile(imageFullPath);
+        } else {
+            log.debug('Request to download image with id %s Failed', req.params.id);
+            res.sendStatus(http.NOT_FOUND);
+        }
+    } catch (err) {
+        log.error(err);
+        res.status(http.INTERNAL_SERVER_ERROR).send(err);
     }
 });
 
@@ -110,6 +118,7 @@ router.post(baseRoute, (req, res) => {
             });
         }
     } catch (err) {
+        log.error(err);
         res.status(http.INTERNAL_SERVER_ERROR).send(err);
     }
 });

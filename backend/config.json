@@ -1,0 +1,8 @@
+{
+    "port": 3000,
+    "log4js": "../log4js.json",
+    "imagePath": "../images",
+    "cors": [
+        "http://localhost:4200"
+    ]
+}

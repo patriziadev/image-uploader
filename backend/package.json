@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "eslint ./src --fix",
-        "start": "cd src && node app.js --port=3000 --log4js=../log4js.json --imagePath=../images",
+        "start": "cd src && node app.js",
         "swagger": "swagger-jsdoc -d swagger.js src/routes/*.js -o swagger.json"
     },
     "author": "davide.boltri",
@@ -17,8 +17,7 @@
         "express-fileupload": "^1.2.0",
         "http-status-codes": "^2.1.2",
         "log4js": "^6.3.0",
-        "swagger-ui-express": "^4.1.4",
-        "yargs": "^15.4.1"
+        "swagger-ui-express": "^4.1.4"
     },
     "devDependencies": {
         "eslint": "^7.8.1",

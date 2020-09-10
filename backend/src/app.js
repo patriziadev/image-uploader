@@ -4,23 +4,24 @@ const fileUpload = require('express-fileupload');
 const logger = require('log4js');
 const swagger = require('swagger-ui-express');
 
-const commandParser = require('./utils/command-parser');
 const image = require('./routes/image');
 const swaggerJson = require('../swagger.json');
+const config = require('../config.json');
 
 const app = express();
 
-const logConfiguration = commandParser.getLogConfiguration();
+const logConfiguration = config.log4js;
 
 if (logConfiguration) {
     logger.configure(logConfiguration);
 }
 
 const log = logger.getLogger('app');
-const port = commandParser.getPortConfiguration() || 3000;
+const port = config.port || 3000;
 
 app.use('*', cors({
-    origin: 'http://localhost:4200',
+    origin: config.cors,
+    optionsSuccessStatus: 200,
 }));
 
 app.listen(port, () => {
