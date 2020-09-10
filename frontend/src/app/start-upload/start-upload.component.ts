@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { UploadService } from './../upload.service';
+
 @Component({
   selector: 'app-start-upload',
   templateUrl: './start-upload.component.html',
@@ -8,18 +10,21 @@ import { Component, OnInit } from '@angular/core';
 export class StartUploadComponent implements OnInit {
   files: any = [];
 
-  constructor() { }
+  constructor(private uploadService: UploadService) { }
 
   ngOnInit(): void {
   }
 
-  uploadFile(event) {
+  uploadFile(event: File) {
     console.log(event);
-    for (let index = 0; index < event.length; index++) {
+    this.uploadService.uploadImage(event).subscribe( resData => {
+      console.log(resData);
+    });
+    /* for (let index = 0; index < event.length; index++) {
       const element = event[index];
       this.files.push(element.name);
       console.log(this.files);
-    }
+    } */
   }
 
 }
