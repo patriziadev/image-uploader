@@ -6,6 +6,34 @@
   "basePath": "/api",
   "swagger": "2.0",
   "paths": {
+    "/image/{id}": {
+      "get": {
+        "summary": "Get an image by id",
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Image id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "404": {
+            "description": "NOT FOUND"
+          }
+        }
+      }
+    },
     "/image": {
       "post": {
         "summary": "Upload an image",

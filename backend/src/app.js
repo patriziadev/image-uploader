@@ -20,7 +20,7 @@ const log = logger.getLogger('app');
 const port = commandParser.getPortConfiguration() || 3000;
 
 app.use('*', cors({
-    origin: "http://localhost:4200"
+    origin: 'http://localhost:4200',
 }));
 
 app.listen(port, () => {

@@ -1,16 +1,47 @@
 const express = require('express');
 const http = require('http-status-codes');
 const logger = require('log4js');
+const fs = require('fs');
+const path = require('path');
+const utils = require('../utils/command-parser');
 
 const log = logger.getLogger('image');
 
 const router = express.Router();
 
 const baseRoute = '/api/image';
+const imagePath = path.resolve(utils.getImagePath());
 
+/**
+ * @swagger
+ *
+ * /image/{id}:
+ *  get:
+ *      summary: "Get an image by id"
+ *      produces:
+ *          - application/octet-stream
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            description: Image id
+ *            type: string
+ *            required: true
+ *      responses:
+ *          200:
+ *              description: OK
+ *              schema:
+ *                  type: file
+ *          404:
+ *              description: NOT FOUND
+ */
 router.get(`${baseRoute}/:id`, (req, res) => {
-    log.debug('Request to load image with id %s', req.params.id);
-    res.end();
+    log.debug('Request to download image with id %s', req.params.id);
+    const imageFullPath = imagePath + path.sep + req.params.id;
+    if (fs.existsSync(imageFullPath)) {
+        res.status(http.OK).sendFile(imageFullPath);
+    } else {
+        res.sendStatus(http.NOT_FOUND);
+    }
 });
 
 /**
@@ -66,11 +97,16 @@ router.post(baseRoute, (req, res) => {
             });
         } else {
             // TODO: check for filesize limit and try to look for streaming
+            // TODO: manage multiple file upload
             const { image } = req.files;
-            log.info('Read image of size %s', image.size);
+            const imageFullPath = imagePath + path.sep + image.name;
+            log.info('Saving image %s of size %s to %s', image.name, image.size, imageFullPath);
+            image.mv(imageFullPath, (err) => {
+                res.status(http.INTERNAL_SERVER_ERROR).send(err);
+            });
             res.status(http.OK).send({
                 success: true,
-                id: -1,
+                id: image.name,
             });
         }
     } catch (err) {
