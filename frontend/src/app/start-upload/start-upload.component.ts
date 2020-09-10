@@ -17,7 +17,7 @@ export class StartUploadComponent implements OnInit {
 
   uploadFile(event) {
     const formData = new FormData();
-
+    this.uploadService.isLoading.next(true);
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
       this.files.push(element);
