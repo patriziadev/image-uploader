@@ -6,7 +6,7 @@ export class UploadService {
 
     constructor( private http: HttpClient ){}
 
-    uploadImage(imageFile: File) {
+    uploadImage(imageFile) {
         return this.http.post(
             'http://localhost:3000/api/image',
             imageFile);
