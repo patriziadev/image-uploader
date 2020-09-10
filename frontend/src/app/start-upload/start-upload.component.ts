@@ -15,16 +15,18 @@ export class StartUploadComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  uploadFile(event: File) {
-    console.log(event);
-    this.uploadService.uploadImage(event).subscribe( resData => {
+  uploadFile(event) {
+    const formData = new FormData();
+
+    for (let index = 0; index < event.length; index++) {
+      const element = event[index];
+      this.files.push(element);
+    }
+
+    formData.append('image', this.files[this.files.length - 1]);
+    this.uploadService.uploadImage(formData).subscribe( resData => {
       console.log(resData);
     });
-    /* for (let index = 0; index < event.length; index++) {
-      const element = event[index];
-      this.files.push(element.name);
-      console.log(this.files);
-    } */
   }
 
 }
