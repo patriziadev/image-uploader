@@ -6,12 +6,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { StartUploadComponent } from './start-upload/start-upload.component';
 import { DndDirective } from './directives/dnd.directive';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StartUploadComponent,
-    DndDirective
+    DndDirective,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,7 @@ import { UploadService } from './upload.service';
 })
 export class AppComponent implements OnInit {
   title = 'image-uploader';
-  isLoading = false;
+  isLoading = true;
 
   constructor(private uploadService: UploadService){}
 
