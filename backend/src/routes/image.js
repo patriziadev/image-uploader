@@ -4,6 +4,7 @@ const logger = require('log4js');
 const fs = require('fs');
 const path = require('path');
 const config = require('../../config.json');
+const { json } = require('express');
 
 const log = logger.getLogger('image');
 
@@ -47,7 +48,7 @@ router.get(`${baseRoute}/:id`, (req, res) => {
             res.sendStatus(http.NOT_FOUND);
         }
     } catch (err) {
-        log.error(err);
+        log.error(err.message);
         res.status(http.INTERNAL_SERVER_ERROR).send(err);
     }
 });
@@ -110,15 +111,22 @@ router.post(baseRoute, (req, res) => {
             const imageFullPath = imagePath + path.sep + image.name;
             log.info('Saving image %s of size %s to %s', image.name, image.size, imageFullPath);
             image.mv(imageFullPath, (err) => {
-                res.status(http.INTERNAL_SERVER_ERROR).send(err);
-            });
-            res.status(http.OK).send({
-                success: true,
-                id: image.name,
+                if (err) {
+                    log.error(err.message);
+                    res.status(http.INTERNAL_SERVER_ERROR).send({
+                        success: false,
+                        message: err.message
+                    });
+                } else {
+                    res.status(http.OK).send({
+                        success: true,
+                        id: image.name,
+                    });
+                }
             });
         }
     } catch (err) {
-        log.error(err);
+        log.error(err.message);
         res.status(http.INTERNAL_SERVER_ERROR).send(err);
     }
 });

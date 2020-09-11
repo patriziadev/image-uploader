@@ -28,7 +28,9 @@ app.listen(port, () => {
     log.debug('Application is listening on port %s', port);
 });
 
-app.use(fileUpload());
+app.use(fileUpload({
+    createParentPath: true
+}));
 app.use(image);
 
 app.use('/api/swagger-ui.html', swagger.serve, swagger.setup(swaggerJson));
