@@ -1,6 +1,7 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 
 import { UploadService } from './upload.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,15 +9,20 @@ import { UploadService } from './upload.service';
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'image-uploader';
-  isLoading = false;
+  public isLoading = 0;
+  private isLoadingSubscription: Subscription;
 
   constructor(private uploadService: UploadService){}
 
   ngOnInit() {
-    this.uploadService.isLoading.subscribe( loadingStatus => {
-      this.isLoading = loadingStatus;
+    this.isLoadingSubscription = this.uploadService.isLoading.subscribe( progress => {
+      this.isLoading = progress;
     });
+  }
+
+  ngOnDestroy() {
+    this.isLoadingSubscription.unsubscribe();
   }
 }
