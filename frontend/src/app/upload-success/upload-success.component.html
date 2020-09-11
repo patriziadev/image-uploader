@@ -5,7 +5,7 @@
         <img src="{{imageUrl}}" alt="{{imageId}}">
     </div>
     <div id="url-to-copy">
-        <div id="url">{{imageUrl}}</div>
-        <button>Copy link</button>
+        <input id="url" [value]="imageUrl">
+        <button (click)="copyLink()">Copy link</button>
     </div>
 </div>

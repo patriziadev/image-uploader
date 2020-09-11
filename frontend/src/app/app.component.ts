@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'image-uploader';
-  public isLoading = 100;
+  public isLoading = 0;
   private isLoadingSubscription: Subscription;
 
   constructor(private uploadService: UploadService){}

@@ -50,8 +50,14 @@ $green: #219653;
         font-size: 12px;
         color: $gray3;
         padding: 10px;
-        white-space: nowrap;
-        overflow: hidden;
+        border: 0;
+        background: transparent;
+        width: 75%;
+    }
+
+    #url:focus {
+        border: 0;
+        outline: none;
     }
 
     button {
@@ -59,7 +65,12 @@ $green: #219653;
         color: $gray1;
         border: 0;
         border-radius: 12px;
-        width: 280px;
+        width: 25%;
         margin: 1px 1px 1px 15px;
+    }
+
+    button:active {
+        background-color: $blue2;
+        outline: none;
     }
 }
