@@ -17,8 +17,9 @@ export class UploadService {
                 observe: 'events'
             }).subscribe( event => {
                 if (event.type === HttpEventType.UploadProgress) {
-                    const progress = (event.loaded / event.total * 100 );
+                    const progress = Math.round(event.loaded / event.total * 100 );
                     this.isLoading.next(progress);
+
                 }
             });
     }
