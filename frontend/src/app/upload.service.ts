@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 @Injectable({providedIn: 'root'})
 export class UploadService {
     isLoading = new Subject<number>();
+    imageId = new Subject<number>();
 
     constructor( private http: HttpClient ){}
 
@@ -19,8 +20,12 @@ export class UploadService {
                 if (event.type === HttpEventType.UploadProgress) {
                     const progress = Math.round(event.loaded / event.total * 100 );
                     this.isLoading.next(progress);
-
                 }
+                if (event.type === HttpEventType.Response) {
+                    const response: any = event.body;
+                    this.imageId.next(response.id);
+                }
+                console.log(event);
             });
     }
 }
