@@ -1,0 +1,65 @@
+$gray1: #FAFAFB;
+$gray2: #BDBDBD;
+$gray3: #828282;
+$gray4: #4F4F4F;
+$gray5: #F2F2F2;
+$gray6: #F6F8FB;
+$gray7: #E0E0E0;
+$blue1: #F6F8FB;
+$blue2: #97BEF4;
+$blue3: #2F80ED;
+$green: #219653;
+
+#success {
+    background-color: $green;
+    color: $gray1;
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    margin: 0 auto;
+
+    i {
+        margin-top: 8px;
+    }
+}
+
+#uploaded-image {
+    //background-color: $gray2;
+    width: 400px;
+    height: 250px;
+    border-radius: 12px;
+
+    img {
+        background-color: $gray2;
+        width: 100%;
+        max-height: 100%;
+        border-radius: 12px;
+        object-fit: cover;
+    }
+}
+
+#url-to-copy {
+    background-color: $gray6;
+    border: 1px solid $gray7;
+    border-radius: 12px;
+    width: 100%;
+    margin-top: 25px;
+    display: inline-flex;
+
+    #url {
+        font-size: 12px;
+        color: $gray3;
+        padding: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    button {
+        background-color: $blue3;
+        color: $gray1;
+        border: 0;
+        border-radius: 12px;
+        width: 280px;
+        margin: 1px 1px 1px 15px;
+    }
+}
