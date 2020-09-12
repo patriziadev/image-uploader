@@ -4,7 +4,8 @@ const fileUpload = require('express-fileupload');
 const logger = require('log4js');
 const swagger = require('swagger-ui-express');
 
-const image = require('./routes/image');
+const routeImage = require('./routes/image');
+const routeConfig = require('./routes/config');
 const swaggerJson = require('../swagger.json');
 const config = require('../config.json');
 
@@ -31,6 +32,7 @@ app.listen(port, () => {
 app.use(fileUpload({
     createParentPath: true,
 }));
-app.use(image);
+app.use(routeImage);
+app.use(routeConfig);
 
 app.use('/api/swagger-ui.html', swagger.serve, swagger.setup(swaggerJson));

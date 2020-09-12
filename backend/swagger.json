@@ -6,6 +6,39 @@
   "basePath": "/api",
   "swagger": "2.0",
   "paths": {
+    "/config": {
+      "get": {
+        "summary": "Retrive configuration of allowed image types and size for upload",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "description": "true if successfull"
+                },
+                "fileSize": {
+                  "type": "integer",
+                  "description": "maximum allowed file size in Kb"
+                },
+                "fileTypes": {
+                  "type": "array",
+                  "description": "list of mime types allowed",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/image/{id}": {
       "get": {
         "summary": "Get an image by id",
