@@ -29,7 +29,7 @@ app.listen(port, () => {
 });
 
 app.use(fileUpload({
-    createParentPath: true
+    createParentPath: true,
 }));
 app.use(image);
 

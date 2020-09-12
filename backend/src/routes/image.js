@@ -4,7 +4,6 @@ const logger = require('log4js');
 const fs = require('fs');
 const path = require('path');
 const config = require('../../config.json');
-const { json } = require('express');
 
 const log = logger.getLogger('image');
 
@@ -81,7 +80,7 @@ router.get(`${baseRoute}/:id`, (req, res) => {
  *                          type: integer
  *                          description: id of the uploaded image
  *          422:
- *              description: Missing file parameter
+ *              description: Missing file or wrong file size or type
  *              schema:
  *                  type: object
  *                  properties:
@@ -105,17 +104,32 @@ router.post(baseRoute, (req, res) => {
                 message: 'Missing files to upload',
             });
         } else {
-            // TODO: check for filesize limit and try to look for streaming
-            // TODO: manage multiple file upload
             const { image } = req.files;
             const imageFullPath = imagePath + path.sep + image.name;
-            log.info('Saving image %s of size %s to %s', image.name, image.size, imageFullPath);
+            const imageSizeKb = Math.ceil(image.size / 1024);
+            if (imageSizeKb > config.fileSize) {
+                log.error('Image size %s Kb greater then allowed %s Kb', imageSizeKb, config.fileSize);
+                res.status(http.UNPROCESSABLE_ENTITY).send({
+                    success: false,
+                    message: `Image too big (maximum ${config.fileSize} Kb)`,
+                });
+                return;
+            }
+            if (!config.fileTypes.includes(image.mimetype)) {
+                log.error('Image mime type %s not in the allowed %s', image.mimetype, config.fileTypes.join(', '));
+                res.status(http.UNPROCESSABLE_ENTITY).send({
+                    success: false,
+                    message: `Image mime type not allowed (allowed ${config.fileTypes.join(', ')})`,
+                });
+                return;
+            }
+            log.info('Saving image %s of size %s Kb and mime %s to %s', image.name, imageSizeKb, image.mimetype, imageFullPath);
             image.mv(imageFullPath, (err) => {
                 if (err) {
                     log.error(err.message);
                     res.status(http.INTERNAL_SERVER_ERROR).send({
                         success: false,
-                        message: err.message
+                        message: err.message,
                     });
                 } else {
                     res.status(http.OK).send({

@@ -4,5 +4,11 @@
     "imagePath": "../images",
     "cors": [
         "http://localhost:4200"
+    ],
+    "fileSize": 1024,
+    "fileTypes": [
+        "image/jpeg",
+        "image/gif",
+        "image/png"
     ]
 }

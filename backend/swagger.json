@@ -72,7 +72,7 @@
             }
           },
           "422": {
-            "description": "Missing file parameter",
+            "description": "Missing file or wrong file size or type",
             "schema": {
               "type": "object",
               "properties": {
