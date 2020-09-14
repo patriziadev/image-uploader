@@ -4,15 +4,22 @@ import { Subject } from 'rxjs';
 
 import { environment } from '../environments/environment';
 
+export interface ResponseBody {
+    'success': boolean;
+    'fileSize': number;
+    'fileTypes': string[];
+}
+
 @Injectable({providedIn: 'root'})
 export class UploadService {
     isLoading = new Subject<number>();
     imageId = new Subject<number>();
+    error = new Subject<string>();
 
     constructor( private http: HttpClient ){}
 
     uploadImage(imageFile) {
-        this.http.post(
+        this.http.post<ResponseBody>(
             environment.serverUrl + '/api/image',
             imageFile,
             {
@@ -23,11 +30,14 @@ export class UploadService {
                     const progress = Math.round(event.loaded / event.total * 100 );
                     this.isLoading.next(progress);
                 }
-                if (event.type === HttpEventType.Response) {
+                if (event.type === HttpEventType.Response && event.ok === true) {
                     const response: any = event.body;
                     this.imageId.next(response.id);
                 }
-                console.log(event);
+            },
+            error => {
+                this.error.next(error.error.message);
+                this.isLoading.next(0);
             });
     }
 }

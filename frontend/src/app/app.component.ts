@@ -13,12 +13,17 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'image-uploader';
   public isLoading = 0;
   private isLoadingSubscription: Subscription;
+  errorMessage: string;
 
   constructor(private uploadService: UploadService){}
 
   ngOnInit() {
     this.isLoadingSubscription = this.uploadService.isLoading.subscribe( progress => {
       this.isLoading = progress;
+    });
+
+    this.uploadService.error.subscribe( error => {
+      this.errorMessage = error;
     });
   }
 

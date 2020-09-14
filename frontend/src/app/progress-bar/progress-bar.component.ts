@@ -15,9 +15,8 @@ export class ProgressBarComponent implements OnInit, OnDestroy {
   constructor(private uploadService: UploadService){}
 
   ngOnInit(): void {
-    this.uploadService.isLoading.subscribe(progress => {
-      console.log(progress);
-    })
+    this.uploadServiceSubscription = this.uploadService.isLoading.subscribe(progress => {
+    });
   }
 
   ngOnDestroy() {

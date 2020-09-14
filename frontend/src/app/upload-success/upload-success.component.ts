@@ -17,7 +17,7 @@ export class UploadSuccessComponent implements OnInit, OnDestroy {
   constructor(private uploadService: UploadService) { }
 
   ngOnInit(): void {
-    this.uploadService.imageId.subscribe( id => {
+    this.uploadServiceSubscription = this.uploadService.imageId.subscribe( id => {
       this.imageId = id;
       this.imageUrl = environment.serverUrl + '/api/image/' + id;
     });

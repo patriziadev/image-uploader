@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { UploadService } from './../upload.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-start-upload',
   templateUrl: './start-upload.component.html',
   styleUrls: ['./start-upload.component.scss']
 })
-export class StartUploadComponent implements OnInit {
+export class StartUploadComponent {
   files: any = [];
+  public errorMessage: string;
+  private errorSubscription: Subscription;
 
-  constructor(private uploadService: UploadService) { }
-
-  ngOnInit(): void {
-  }
+  constructor(private uploadService: UploadService) {}
 
   uploadFile(event) {
     const formData = new FormData();
