@@ -2,6 +2,8 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { environment } from '../environments/environment';
+
 @Injectable({providedIn: 'root'})
 export class UploadService {
     isLoading = new Subject<number>();
@@ -11,7 +13,7 @@ export class UploadService {
 
     uploadImage(imageFile) {
         this.http.post(
-            'http://localhost:3000/api/image',
+            environment.serverUrl + '/api/image',
             imageFile,
             {
                 reportProgress: true,

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { UploadService } from './../upload.service';
 import { Subscription } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-upload-success',
@@ -10,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class UploadSuccessComponent implements OnInit, OnDestroy {
   public imageId: number;
-  public imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/440px-Image_created_with_a_mobile_phone.png';
+  public imageUrl: string;
   private uploadServiceSubscription: Subscription;
 
   constructor(private uploadService: UploadService) { }
@@ -18,6 +19,7 @@ export class UploadSuccessComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.uploadService.imageId.subscribe( id => {
       this.imageId = id;
+      this.imageUrl = environment.serverUrl + '/api/image/' + id;
     });
   }
 
