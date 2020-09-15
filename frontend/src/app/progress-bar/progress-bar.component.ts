@@ -1,26 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-
-import { UploadService } from './../upload.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-progress-bar',
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.scss']
 })
-export class ProgressBarComponent implements OnInit, OnDestroy {
+export class ProgressBarComponent implements OnInit{
   public percentage = 0;
-  private uploadServiceSubscription: Subscription;
 
-  constructor(private uploadService: UploadService){}
+  constructor(){}
 
-  ngOnInit(): void {
-    this.uploadServiceSubscription = this.uploadService.isLoading.subscribe(progress => {
-    });
-  }
-
-  ngOnDestroy() {
-    this.uploadServiceSubscription.unsubscribe();
-  }
-
+  ngOnInit(): void { }
 }

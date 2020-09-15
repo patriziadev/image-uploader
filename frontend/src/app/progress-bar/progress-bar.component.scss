@@ -18,11 +18,23 @@ h3 {
     height: 5px;
     border-radius: 5px;
     background-color: $gray5;
+    position: relative;
 
     #progress {
         height: 5px;
-        width: 4%;
+        width: 10%;
         border-radius: 5px;
         background-color: $blue3;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        animation: progress 3s infinite;
     }
+
+        @keyframes progress {
+            0% { left: 0; background-color: $blue3; }
+            50% { left: 90%; background-color: $blue3; }
+            100% { left: 0; background-color: $blue3; }
+        }
 }
