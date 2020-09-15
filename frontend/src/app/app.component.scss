@@ -41,3 +41,11 @@ p {
     line-height: 15px;
     color: $gray3;
 }
+
+.error {
+    background-color: #ff9292;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 12px;
+    line-height: 1.2rem;
+}

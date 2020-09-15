@@ -10,8 +10,8 @@ import { Subscription } from 'rxjs';
 })
 export class StartUploadComponent {
   files: any = [];
+  allowedFiles = ['image/jpeg', 'image/png', 'image/gif'];
   public errorMessage: string;
-  private errorSubscription: Subscription;
 
   constructor(private uploadService: UploadService) {}
 
@@ -22,8 +22,15 @@ export class StartUploadComponent {
       this.files.push(element);
     }
 
-    formData.append('image', this.files[this.files.length - 1]);
-    this.uploadService.uploadImage(formData);
+    if (this.files[this.files.length - 1].size > 1024000) {
+      this.errorMessage = 'Please insert a smaller image. The image must be less than 1024 kb';
+    } else if (this.allowedFiles.indexOf(this.files[this.files.length - 1].type) === -1 ) {
+      console.log(this.files[this.files.length - 1].type);
+      this.errorMessage = 'Please insert a JPG, PNG or GIF image. No other type of image are allowed';
+    } else {
+      formData.append('image', this.files[this.files.length - 1]);
+      this.uploadService.uploadImage(formData);
+    }
   }
 
 }

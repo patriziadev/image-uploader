@@ -1,8 +1,9 @@
 <div class="content">
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
     <h1>Upload your image</h1>
-    <p>File should be JPEG, PNG...</p>
+    <p>File should be JPEG, PNG, GIF</p>
     <div class="dropzone" appDnd (click)="fileInput.click()" (onfileDropped)="uploadFile($event)">
-        <input type="file" #fileInput id="file" (change)="uploadFile($event.target.files)" accept=".jpg, .png">
+        <input type="file" #fileInput id="file" (change)="uploadFile($event.target.files)" accept=".jpg, .png, .gif, .jpeg">
         <img src="../../assets/images/image.svg" alt="Drag & drop image">
         <h3>Drag & Drop your image here</h3>
     </div>
