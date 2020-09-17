@@ -7,14 +7,15 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "eslint ./src --fix",
         "start": "cd src && node app.js",
+        "debug": "cd src && node --inspect app.js",
         "swagger": "swagger-jsdoc -d swagger.js src/routes/*.js -o swagger.json"
     },
     "author": "davide.boltri",
     "license": "ISC",
     "dependencies": {
+        "connect-busboy": "0.0.2",
         "cors": "^2.8.5",
         "express": "^4.17.1",
-        "express-fileupload": "^1.2.0",
         "http-status-codes": "^2.1.2",
         "log4js": "^6.3.0",
         "swagger-ui-express": "^4.1.4"
