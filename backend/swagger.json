@@ -32,6 +32,13 @@
                   "items": {
                     "type": "string"
                   }
+                },
+                "fileExtensions": {
+                  "type": "array",
+                  "description": "list of extensions allowed",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }

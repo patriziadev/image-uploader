@@ -10,5 +10,11 @@
         "image/jpeg",
         "image/gif",
         "image/png"
+    ],
+    "fileExtensions": [
+        "jpg",
+        "jpeg",
+        "gif",
+        "png"
     ]
 }
