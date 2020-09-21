@@ -16,7 +16,7 @@ export class StartUploadComponent {
 
   uploadFile(event) {
     const formData = new FormData();
-    for (let index = 0; index < event.length; index++) {
+    for (const index of event) {
       const element = event[index];
       this.files.push(element);
     }
