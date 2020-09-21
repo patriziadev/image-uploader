@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { UploadService } from './../upload.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-start-upload',
@@ -25,7 +24,6 @@ export class StartUploadComponent {
     if (this.files[this.files.length - 1].size > 1024000) {
       this.errorMessage = 'Please insert a smaller image. The image must be less than 1024 kb';
     } else if (this.allowedFiles.indexOf(this.files[this.files.length - 1].type) === -1 ) {
-      console.log(this.files[this.files.length - 1].type);
       this.errorMessage = 'Please insert a JPG, PNG or GIF image. No other type of image are allowed';
     } else {
       formData.append('image', this.files[this.files.length - 1]);
