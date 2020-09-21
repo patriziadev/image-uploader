@@ -13,6 +13,27 @@ const baseRoute = '/api/image';
 const imagePath = path.resolve(config.imagePath);
 
 /**
+ * Common method to build and send REST API response
+ * @param {Response} res
+ * @param {number} httpStatus
+ * @param {boolean} success
+ * @param {string} message
+ * @returns response
+ */
+function buildResponse(res, httpStatus, success, message) {
+    if (httpStatus === http.OK) {
+        return res.status(httpStatus).send({
+            success,
+            id: message,
+        });
+    }
+    return res.status(httpStatus).send({
+        success,
+        message,
+    });
+}
+
+/**
  * @swagger
  *
  * /image/{id}:
@@ -97,48 +118,62 @@ router.get(`${baseRoute}/:id`, (req, res) => {
  */
 router.post(baseRoute, (req, res) => {
     try {
-        if (!req.files) {
-            log.error('Received request without files %s', req);
-            res.status(http.UNPROCESSABLE_ENTITY).send({
-                success: false,
-                message: 'Missing files to upload',
-            });
-        } else {
-            const { image } = req.files;
-            const imageFullPath = imagePath + path.sep + image.name;
-            const imageSizeKb = Math.ceil(image.size / 1024);
-            if (imageSizeKb > config.fileSize) {
-                log.error('Image size %s Kb greater then allowed %s Kb', imageSizeKb, config.fileSize);
-                res.status(http.UNPROCESSABLE_ENTITY).send({
-                    success: false,
-                    message: `Image too big (maximum ${config.fileSize} Kb)`,
-                });
-                return;
-            }
-            if (!config.fileTypes.includes(image.mimetype)) {
-                log.error('Image mime type %s not in the allowed %s', image.mimetype, config.fileTypes.join(', '));
-                res.status(http.UNPROCESSABLE_ENTITY).send({
-                    success: false,
-                    message: `Image mime type not allowed (allowed ${config.fileTypes.join(', ')})`,
-                });
-                return;
-            }
-            log.info('Saving image %s of size %s Kb and mime %s to %s', image.name, imageSizeKb, image.mimetype, imageFullPath);
-            image.mv(imageFullPath, (err) => {
-                if (err) {
-                    log.error(err.message);
-                    res.status(http.INTERNAL_SERVER_ERROR).send({
-                        success: false,
-                        message: err.message,
-                    });
-                } else {
-                    res.status(http.OK).send({
-                        success: true,
-                        id: image.name,
-                    });
-                }
-            });
+        // If busboy is not defined, no file has been uploaded, quit immediatly
+        if (!req.busboy) {
+            log.error('Received request without files');
+            buildResponse(res, http.UNPROCESSABLE_ENTITY, false, 'Missing files to upload');
+            return;
         }
+
+        req.pipe(req.busboy);
+
+        // Manage streaming upload of the file
+        req.busboy.on('file', (fieldname, stream, filename, transferEncoding, mimeType) => {
+            const isMimeTypeCorrect = config.fileTypes.includes(mimeType);
+            let isTooBig = false;
+
+            // create base folder if doesn't exists
+            if (!fs.existsSync(imagePath)) {
+                fs.mkdirSync(imagePath, { recursive: true });
+            }
+            const imageFullPath = imagePath + path.sep + filename;
+
+            // if mimeType is not correct consume the stream and return
+            if (!isMimeTypeCorrect) {
+                stream.resume();
+                const allowedTypes = config.fileTypes.join(', ');
+                const errorMessage = `Image mime type not allowed (allowed ${allowedTypes})`;
+                log.error('Image mime type %s not one of the allowed %s', mimeType, allowedTypes);
+                buildResponse(res, http.UNPROCESSABLE_ENTITY, false, errorMessage);
+            } else {
+                log.info('Saving image %s with mime %s to %s', filename, mimeType, imageFullPath);
+
+                // if the uploaded file size exceed limit, consume the stream and exit
+                stream.on('limit', () => {
+                    log.error('Image size greater then allowed %s Kb', config.fileSize);
+                    stream.resume();
+                    isTooBig = true;
+                    if (fs.existsSync(imageFullPath)) {
+                        // Remove asynchronously to not make the process wait for the deletion
+                        log.info('Removing incomplete file %s', imageFullPath);
+                        fs.unlink(imageFullPath, () => {});
+                    }
+                });
+
+                stream.on('end', () => {
+                    if (!isTooBig) {
+                        log.info('Image %s saved', filename);
+                        buildResponse(res, http.OK, true, filename);
+                    } else {
+                        const errorMessage = `Image too big (maximum ${config.fileSize} Kb)`;
+                        buildResponse(res, http.UNPROCESSABLE_ENTITY, false, errorMessage);
+                    }
+                });
+
+                // save the uploaded stream
+                stream.pipe(fs.createWriteStream(imageFullPath));
+            }
+        });
     } catch (err) {
         log.error(err.message);
         res.status(http.INTERNAL_SERVER_ERROR).send(err);

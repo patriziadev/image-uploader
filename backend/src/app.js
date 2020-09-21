@@ -1,6 +1,6 @@
+const busboy = require('connect-busboy');
 const cors = require('cors');
 const express = require('express');
-const fileUpload = require('express-fileupload');
 const logger = require('log4js');
 const swagger = require('swagger-ui-express');
 
@@ -29,8 +29,11 @@ app.listen(port, () => {
     log.debug('Application is listening on port %s', port);
 });
 
-app.use(fileUpload({
-    createParentPath: true,
+app.use(busboy({
+    highWaterMark: 1024 * 1024,
+    limits: {
+        fileSize: config.fileSize * 1024,
+    },
 }));
 app.use(routeImage);
 app.use(routeConfig);

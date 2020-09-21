@@ -29,6 +29,11 @@ const router = express.Router();
  *                          description: list of mime types allowed
  *                          items:
  *                              type: string
+ *                      fileExtensions:
+ *                          type: array
+ *                          description: list of extensions allowed
+ *                          items:
+ *                              type: string
  *
  */
 router.get('/api/config', (req, res) => {
@@ -36,6 +41,7 @@ router.get('/api/config', (req, res) => {
         success: true,
         fileSize: config.fileSize,
         fileTypes: config.fileTypes,
+        fileExtensions: config.fileExtensions,
     });
 });
 
