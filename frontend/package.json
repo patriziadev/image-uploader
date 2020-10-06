@@ -1,6 +1,6 @@
 {
   "name": "image-uploader",
-  "version": "1.0.0-snapshot",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
