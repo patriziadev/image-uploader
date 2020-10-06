@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { UploadService } from './../upload.service';
 
@@ -7,22 +7,30 @@ import { UploadService } from './../upload.service';
   templateUrl: './start-upload.component.html',
   styleUrls: ['./start-upload.component.scss']
 })
-export class StartUploadComponent {
+export class StartUploadComponent implements OnInit {
   files: any = [];
-  allowedFiles = ['image/jpeg', 'image/png', 'image/gif'];
+  fileSize: number;
+  allowedFiles = [];
   public errorMessage: string;
 
   constructor(private uploadService: UploadService) {}
 
+  ngOnInit() {
+    this.uploadService.uploadDetails().subscribe( responseData => {
+      this.fileSize = responseData.fileSize;
+      this.allowedFiles = responseData.fileTypes;
+    });
+  }
+
   uploadFile(event) {
     const formData = new FormData();
-    for (const index of event) {
+    for (let index = 0; index < event.length; index++) {
       const element = event[index];
       this.files.push(element);
     }
 
-    if (this.files[this.files.length - 1].size > 1024000) {
-      this.errorMessage = 'Please insert a smaller image. The image must be less than 1024 kb';
+    if (this.files[this.files.length - 1].size > this.fileSize * 1000) {
+      this.errorMessage = 'Please insert a smaller image. The image must be less than' + this.fileSize + 'kb';
     } else if (this.allowedFiles.indexOf(this.files[this.files.length - 1].type) === -1 ) {
       this.errorMessage = 'Please insert a JPG, PNG or GIF image. No other type of image are allowed';
     } else {
