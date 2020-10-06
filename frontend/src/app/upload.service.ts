@@ -4,6 +4,13 @@ import { Subject } from 'rxjs';
 
 import { environment } from '../environments/environment';
 
+export interface ImageDetails {
+    'success': boolean;
+    'fileSize': number;
+    'fileTypes': string[];
+    'fileExtensions': string[];
+}
+
 export interface ResponseBody {
     'success': boolean;
     'fileSize': number;
@@ -17,6 +24,12 @@ export class UploadService {
     error = new Subject<string>();
 
     constructor( private http: HttpClient ){}
+
+    uploadDetails() {
+        return this.http.get<ImageDetails>(
+            environment.serverUrl + '/api/config'
+        );
+    }
 
     uploadImage(imageFile) {
         this.http.post<ResponseBody>(
